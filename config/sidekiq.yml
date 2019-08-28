@@ -1,0 +1,4 @@
+---
+:verbose: true
+:concurrency: 15
+:timeout: 15
