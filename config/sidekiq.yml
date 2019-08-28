@@ -1,4 +1,8 @@
 ---
 :verbose: true
-:concurrency: 15
-:timeout: 15
+:concurrency: 5
+production:
+  :concurrency: 25
+:timeout: 30
+:queues:
+  - default

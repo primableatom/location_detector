@@ -1,5 +1,3 @@
-# Algorithim Shamelessly Copied from http://jakescruggs.blogspot.com/2009/07/point-inside-polygon-in-ruby.html
-
 module LocationDetector
   class Polygon
 

@@ -38,7 +38,11 @@ RSpec.describe Api::V1::LocationsController, type: :controller do
 
     let!(:location_2) {
       FactoryGirl.create(:location, input_address: 'foo bar', address_fetch_error: 'No results found for this address')
-    }    
+    }
+
+    let!(:location_3) {
+      FactoryGirl.create(:location, input_address: 'foo', address_fetch_error: nil, latitude: nil, longitude: nil)
+    }
 
     let!(:feature) {
       FactoryGirl.create(:feature)
@@ -58,16 +62,24 @@ RSpec.describe Api::V1::LocationsController, type: :controller do
       get :show, params: { id: location.id, access_token: @api_key.access_token }
       resp = JSON.parse(response.body)
       expect(resp['inside']).to eq(true)
+      expect(resp['formatted_address']).to_not be_blank
     end
 
     it "should lie outside the points" do
       get :show, params: { id: location_1.id, access_token: @api_key.access_token }
       resp = JSON.parse(response.body)
       expect(resp['inside']).to eq(false)
+      expect(resp['formatted_address']).to_not be_blank
     end
 
     it "should show location's address_fetch_error if location hasn't detected a lat lng" do
       get :show, params: { id: location_2.id, access_token: @api_key.access_token }
+      resp = JSON.parse(response.body)
+      expect(resp['address_fetch_error']).to_not be_blank
+    end
+
+    it "should show only location id and an error message if location lat lng is blank" do
+      get :show, params: { id: location_3.id, access_token: @api_key.access_token }
       resp = JSON.parse(response.body)
       expect(resp['address_fetch_error']).to_not be_blank
     end

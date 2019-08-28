@@ -25,7 +25,4 @@ test:
   database: location_detector_test
 
 production:
-  <<: *default
-  username:
-  password:
-  database: location_detector_production
+  url: <%= ENV['DATABASE_URL'] %>
